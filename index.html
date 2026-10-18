@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoop &amp; Swirl — Handmade Ice Cream in Lahore</title>
+<meta name="description" content="Scoop &amp; Swirl is a playful premium ice cream shop in Lahore. Handmade fresh daily with real fruit.">
+</head>
+<body>
+<!-- ============================================================
+  SCOOP & SWIRL — Lahore · single-page site
+  Sections: nav / hero / flavors / why / about / gallery /
+            reviews / CTA / contact / footer + cart + lightbox
+  CSS in <style>, JS in <script> below. Mobile-first.
+============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ---------- 1. Tokens & reset ---------- */
+:root{
+  --vanilla:#FFF8EC;
+  --vanilla-2:#FFFDF6;
+  --pink:#FF8FAB;
+  --pink-dark:#F66E95;
+  --pink-soft:#FFE3EB;
+  --mint:#A8E6CF;
+  --mint-soft:#DDF7EC;
+  --choco:#4A2C2A;
+  --choco-soft:#6B4542;
+  --white:#ffffff;
+  --shadow:0 18px 40px -18px rgba(74,44,42,.25);
+  --shadow-sm:0 10px 24px -12px rgba(74,44,42,.22);
+  --r-lg:28px; --r-md:20px; --r-sm:14px;
+  --max:1160px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"Poppins",system-ui,-apple-system,sans-serif;
+  background:var(--vanilla);
+  color:var(--choco);
+  text-align:left;
+  line-height:1.65;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+h1,h2,h3,.font-head{font-family:"Fredoka","Poppins",sans-serif;line-height:1.12;letter-spacing:-.01em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+section{padding:72px 0}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--white);border:2px solid var(--choco);
+  border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:600;
+  box-shadow:3px 3px 0 var(--choco);margin-bottom:16px;
+}
+.section-title{font-size:clamp(1.7rem,3.4vw,2.6rem);font-weight:700;margin-bottom:10px}
+.section-sub{color:var(--choco-soft);max-width:620px;font-size:1.02rem;margin-bottom:28px}
+/* reveal on scroll */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .float-slow,.sprinkle,.hero-blob{animation:none !important}
+}
+
+/* ---------- 2. Navbar ---------- */
+.navbar{
+  position:sticky;top:0;z-index:60;
+  background:rgba(255,248,236,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:2px solid rgba(74,44,42,.08);
+  transition:box-shadow .25s ease;
+}
+.navbar.scrolled{box-shadow:0 8px 30px -12px rgba(74,44,42,.25)}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fredoka;font-weight:700;font-size:1.25rem}
+.logo-mark{
+  width:42px;height:42px;border-radius:14px;background:var(--pink);
+  display:grid;place-items:center;border:2px solid var(--choco);box-shadow:3px 3px 0 var(--choco);
+  font-size:1.35rem;flex-shrink:0;
+}
+.logo small{display:block;font-family:Poppins;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--choco-soft)}
+.nav-links{display:none;gap:26px;margin-left:auto;font-weight:500;font-size:.95rem}
+.nav-links a{position:relative;padding:6px 2px}
+.nav-links a::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:0;background:var(--pink);border-radius:99px;transition:width .25s}
+.nav-links a:hover::after{width:100%}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  border-radius:999px;font-weight:600;border:2px solid var(--choco);
+  padding:13px 24px;font-size:.98rem;min-height:48px;line-height:1.2;
+  transition:transform .18s ease,box-shadow .18s ease,background .18s;
+  box-shadow:4px 4px 0 var(--choco);
+}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--choco)}
+.btn-pink{background:var(--pink);color:var(--choco)}
+.btn-pink:hover{background:var(--pink-dark)}
+.btn-choco{background:var(--choco);color:#fff;box-shadow:4px 4px 0 rgba(74,44,42,.25)}
+.btn-choco:hover{background:#5d3835}
+.btn-white{background:#fff;color:var(--choco)}
+.btn-mint{background:var(--mint);color:var(--choco)}
+.btn-sm{padding:10px 18px;min-height:44px;font-size:.9rem}
+.nav-order{margin-left:auto}
+.cart-count{
+  display:inline-grid;place-items:center;min-width:24px;height:24px;padding:0 6px;
+  background:var(--choco);color:#fff;border-radius:99px;font-size:.78rem;font-weight:700;
+}
+.burger{display:inline-flex;margin-left:4px;background:#fff;border:2px solid var(--choco);border-radius:12px;width:46px;height:46px;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--choco)}
+.burger span{display:block;width:20px;height:2.5px;background:var(--choco);border-radius:2px;position:relative}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:20px;height:2.5px;background:var(--choco);border-radius:2px}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.mobile-menu{display:none;background:var(--vanilla-2);border-bottom:2px solid rgba(74,44,42,.1);padding:10px 20px 18px}
+.mobile-menu.open{display:block}
+.mobile-menu a{display:block;padding:13px 6px;font-weight:600;border-bottom:1px dashed rgba(74,44,42,.15)}
+@media(min-width:900px){
+  .nav-links{display:flex}
+  .nav-order{margin-left:0}
+  .burger{display:none}
+  .mobile-menu{display:none !important}
+}
+
+/* ---------- 3. Hero ---------- */
+.hero{min-height:calc(100vh - 68px);display:flex;align-items:center;padding:36px 0 56px;position:relative;overflow:hidden}
+.hero-grid{display:grid;gap:36px;align-items:center}
+@media(min-width:940px){.hero-grid{grid-template-columns:1.05fr .95fr;gap:20px}}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:var(--mint-soft);border:2px solid var(--choco);padding:7px 14px;border-radius:999px;font-size:.83rem;font-weight:600;box-shadow:3px 3px 0 var(--choco)}
+.hero h1{font-size:clamp(2.5rem,6.2vw,4.3rem);font-weight:700;margin:18px 0 14px}
+.hero h1 .swirl{color:var(--pink-dark);position:relative;white-space:nowrap}
+.hero h1 .swirl svg{position:absolute;left:0;right:0;bottom:-10px;width:100%;height:14px}
+.hero p.lead{font-size:clamp(1rem,1.6vw,1.15rem);color:var(--choco-soft);max-width:480px;margin-bottom:26px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:26px}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;font-size:.9rem}
+.hero-stats strong{font-family:Fredoka;font-size:1.25rem;display:block}
+.hero-stats span{color:var(--choco-soft);font-size:.82rem}
+.hero-visual{position:relative;display:grid;place-items:center;min-height:380px}
+.hero-blob{
+  position:absolute;width:min(480px,92%);aspect-ratio:1;
+  background:radial-gradient(circle at 30% 25%,#fff 0 18%,var(--pink-soft) 19% 55%,var(--mint-soft) 56% 100%);
+  border-radius:58% 42% 55% 45%/48% 55% 45% 52%;
+  border:3px solid var(--choco);
+  animation:blobmorph 9s ease-in-out infinite alternate;
+}
+@keyframes blobmorph{
+  0%{border-radius:58% 42% 55% 45%/48% 55% 45% 52%;transform:rotate(-2deg)}
+  100%{border-radius:45% 55% 42% 58%/55% 45% 58% 42%;transform:rotate(2deg)}
+}
+.hero-img{
+  position:relative;z-index:2;width:min(400px,78%);aspect-ratio:.86;
+  object-fit:cover;border-radius:200px 200px 28px 28px;
+  border:4px solid var(--choco);box-shadow:10px 10px 0 var(--choco);
+  background:#fff;
+}
+.float-chip{
+  position:absolute;z-index:3;background:#fff;border:2px solid var(--choco);border-radius:16px;
+  padding:8px 12px;font-size:.82rem;font-weight:600;box-shadow:4px 4px 0 var(--choco);
+  display:flex;align-items:center;gap:8px;
+}
+.float-slow{animation:floaty 4.5s ease-in-out infinite}
+.float-slower{animation:floaty 6s ease-in-out infinite reverse}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.chip-1{top:8%;left:2%}.chip-2{bottom:10%;right:2%}.chip-3{top:46%;right:-2%}
+.sprinkle{position:absolute;z-index:3;border-radius:99px;opacity:.95}
+@media(max-width:520px){
+  .chip-3{display:none}.hero-img{width:min(300px,80%)}
+  .float-chip{font-size:.72rem;padding:6px 10px;max-width:62%;line-height:1.35}
+  .chip-1{top:2%;left:0}.chip-2{bottom:6%;right:0}
+  .logo{font-size:1.02rem}.logo small{display:none}
+  .logo-mark{width:36px;height:36px;font-size:1.1rem}
+  .nav-order{padding:8px 12px;min-height:44px;font-size:.82rem}
+  .burger{width:42px;height:42px}
+  .nav-inner{gap:10px;padding:10px 14px}
+  .hero-stats strong{font-size:1.05rem}
+}
+
+/* marquee */
+.marquee{background:var(--choco);color:var(--vanilla);overflow:hidden;white-space:nowrap;padding:12px 0;font-family:Fredoka;font-weight:500;letter-spacing:.02em}
+.marquee-track{display:inline-block;animation:scrollx 22s linear infinite}
+@keyframes scrollx{to{transform:translateX(-50%)}}
+
+/* ---------- 4. Flavors ---------- */
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:26px}
+.filter-btn{
+  border:2px solid var(--choco);background:#fff;border-radius:999px;
+  padding:10px 20px;font-weight:600;font-size:.9rem;min-height:44px;transition:all .18s;
+}
+.filter-btn.active{background:var(--choco);color:#fff;box-shadow:3px 3px 0 var(--pink)}
+.filter-btn:not(.active):hover{background:var(--pink-soft)}
+.flavor-grid{display:grid;gap:20px;grid-template-columns:1fr}
+@media(min-width:600px){.flavor-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:980px){.flavor-grid{grid-template-columns:repeat(4,1fr)}}
+.flavor-card{
+  background:#fff;border:2px solid var(--choco);border-radius:var(--r-md);
+  overflow:hidden;transition:transform .22s ease,box-shadow .22s ease,opacity .3s;
+  display:flex;flex-direction:column;position:relative;
+}
+.flavor-card:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+.flavor-card.hidden-card{display:none}
+.flavor-img-wrap{position:relative;overflow:hidden;aspect-ratio:1/.82;background:var(--pink-soft)}
+.flavor-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+.flavor-card:hover .flavor-img-wrap img{transform:scale(1.06)}
+.flavor-tag{
+  position:absolute;top:12px;left:12px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--mint);border:2px solid var(--choco);padding:4px 10px;border-radius:99px;
+}
+.flavor-tag.choc{background:#E9C893}.flavor-tag.fruit{background:#FFC9D6}
+.flavor-body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1}
+.flavor-body h3{font-size:1.12rem}
+.flavor-body p{font-size:.9rem;color:var(--choco-soft);flex:1}
+.flavor-row{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.price{font-family:Fredoka;font-weight:700;font-size:1.15rem}
+.price small{font-family:Poppins;font-weight:500;font-size:.75rem;color:var(--choco-soft)}
+.add-btn{
+  border:2px solid var(--choco);background:var(--pink);color:var(--choco);
+  border-radius:999px;padding:10px 16px;font-weight:700;font-size:.85rem;min-height:44px;
+  box-shadow:3px 3px 0 var(--choco);transition:all .18s;opacity:1;
+}
+@media(hover:hover){
+  .add-btn{opacity:0;transform:translateY(8px)}
+  .flavor-card:hover .add-btn,.flavor-card:focus-within .add-btn{opacity:1;transform:none}
+}
+.add-btn:hover{background:var(--pink-dark)}
+
+/* ---------- 5. Why / About ---------- */
+.why{background:var(--vanilla-2);border-top:2px solid rgba(74,44,42,.08);border-bottom:2px solid rgba(74,44,42,.08)}
+.why-grid{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:820px){.why-grid{grid-template-columns:repeat(3,1fr)}}
+.why-card{background:#fff;border:2px solid var(--choco);border-radius:var(--r-md);padding:28px 24px;box-shadow:5px 5px 0 var(--mint);transition:transform .2s}
+.why-card:nth-child(2){box-shadow:5px 5px 0 var(--pink)}
+.why-card:nth-child(3){box-shadow:5px 5px 0 #FFE08A}
+.why-card:hover{transform:translateY(-5px)}
+.why-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;border:2px solid var(--choco);margin-bottom:16px;font-size:1.6rem}
+.about-grid{display:grid;gap:34px;align-items:center}
+@media(min-width:920px){.about-grid{grid-template-columns:.95fr 1.05fr}}
+.about-photo{position:relative}
+.about-photo img{border-radius:var(--r-lg);border:3px solid var(--choco);box-shadow:10px 10px 0 var(--mint);aspect-ratio:4/4.4;object-fit:cover;width:100%}
+.about-badge{position:absolute;bottom:-18px;right:14px;background:var(--choco);color:#fff;border-radius:18px;padding:12px 18px;font-family:Fredoka;box-shadow:5px 5px 0 var(--pink)}
+.counters{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:30px}
+.counter{background:#fff;border:2px solid var(--choco);border-radius:18px;padding:18px 10px;text-align:center}
+.counter strong{font-family:Fredoka;font-size:clamp(1.3rem,3vw,1.9rem);display:block;color:var(--pink-dark)}
+.counter span{font-size:.82rem;color:var(--choco-soft);font-weight:500}
+
+/* ---------- 6. Gallery ---------- */
+.gallery-cols{columns:2;column-gap:14px}
+@media(min-width:820px){.gallery-cols{columns:3}}
+.g-item{break-inside:avoid;margin-bottom:14px;border-radius:18px;overflow:hidden;border:2px solid var(--choco);cursor:zoom-in;position:relative;background:#fff}
+.g-item img{width:100%;transition:transform .45s ease}
+.g-item:hover img{transform:scale(1.07)}
+.g-item::after{content:"View";position:absolute;inset:auto 12px 12px auto;background:rgba(255,255,255,.92);border:2px solid var(--choco);font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:99px;opacity:0;transition:opacity .25s}
+.g-item:hover::after{opacity:1}
+
+/* ---------- 7. Reviews ---------- */
+.reviews{background:var(--mint-soft);border-top:2px solid rgba(74,44,42,.08);border-bottom:2px solid rgba(74,44,42,.08)}
+.slider{position:relative;max-width:720px;margin:0 auto}
+.slide{display:none;background:#fff;border:2px solid var(--choco);border-radius:var(--r-lg);padding:32px 28px;text-align:center;box-shadow:6px 6px 0 var(--choco)}
+.slide.active{display:block;animation:fadein .45s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.stars{color:#F5A623;font-size:1.2rem;letter-spacing:2px;margin-bottom:10px}
+.slide p{font-size:1.02rem;margin-bottom:16px}
+.slide .who{display:flex;align-items:center;justify-content:center;gap:12px}
+.avatar{width:48px;height:48px;border-radius:50%;border:2px solid var(--choco);display:grid;place-items:center;font-weight:700;background:var(--pink-soft)}
+.slider-nav{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:20px}
+.arrow-btn{width:48px;height:48px;border-radius:50%;border:2px solid var(--choco);background:#fff;font-size:1.2rem;box-shadow:3px 3px 0 var(--choco)}
+.dots{display:flex;gap:8px}
+.dot{width:12px;height:12px;border-radius:99px;background:rgba(74,44,42,.2);border:none;padding:0}
+.dot.active{background:var(--choco);width:28px}
+
+/* ---------- 8. CTA / Contact / Footer ---------- */
+.cta{background:var(--pink);border-top:3px solid var(--choco);border-bottom:3px solid var(--choco);text-align:center;position:relative;overflow:hidden}
+.cta h2{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:10px}
+.cta p{font-weight:500;margin-bottom:24px;color:#5b2b2e}
+.cta .btn{font-size:1.05rem;padding:16px 34px}
+.contact-grid{display:grid;gap:26px}
+@media(min-width:920px){.contact-grid{grid-template-columns:1fr 1fr}}
+.form-card,.info-card{background:#fff;border:2px solid var(--choco);border-radius:var(--r-md);padding:28px;box-shadow:6px 6px 0 var(--mint)}
+.info-card{box-shadow:6px 6px 0 var(--pink)}
+.field{margin-bottom:16px}
+.field label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+.field input,.field textarea{
+  width:100%;border:2px solid var(--choco);border-radius:12px;padding:13px 14px;
+  font-family:inherit;font-size:.95rem;background:var(--vanilla-2);color:var(--choco);min-height:48px;
+}
+.field input:focus,.field textarea:focus{outline:3px solid var(--pink-soft);border-color:var(--choco)}
+.info-line{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed rgba(74,44,42,.18);font-size:.95rem}
+.info-line:last-child{border:none}
+.map-wrap{margin-top:18px;border-radius:16px;overflow:hidden;border:2px solid var(--choco)}
+.map-wrap iframe{width:100%;height:240px;border:0;display:block}
+.socials{display:flex;gap:10px;margin-top:14px}
+.socials a{width:46px;height:46px;border-radius:14px;border:2px solid var(--choco);display:grid;place-items:center;background:var(--vanilla);box-shadow:3px 3px 0 var(--choco);transition:transform .15s}
+.socials a:hover{transform:translateY(-3px);background:var(--mint)}
+footer{background:var(--choco);color:#FFF3E2;padding:40px 0 26px;text-align:center}
+.foot-grid{display:grid;gap:22px;margin-bottom:22px}
+@media(min-width:760px){.foot-grid{grid-template-columns:1.2fr 1fr 1fr;text-align:left}}
+.foot-grid h4{font-family:Fredoka;margin-bottom:10px;color:#fff}
+.foot-grid a{display:block;padding:5px 0;color:#F5D9C8;font-size:.92rem}
+.foot-grid a:hover{color:#fff}
+.copy{border-top:1px solid rgba(255,255,255,.18);padding-top:16px;font-size:.82rem;color:#E8C9B8}
+
+/* ---------- 9. Floating / cart / lightbox / toast ---------- */
+.wa-float{
+  position:fixed;right:18px;bottom:18px;z-index:70;
+  width:60px;height:60px;border-radius:50%;background:#25D366;
+  display:grid;place-items:center;border:2px solid var(--choco);box-shadow:4px 4px 0 var(--choco);
+  transition:transform .18s;
+}
+.wa-float:hover{transform:scale(1.08) rotate(4deg)}
+.wa-float::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #25D366;opacity:.6;animation:ping 2s infinite}
+@keyframes ping{0%{transform:scale(.85);opacity:.7}100%{transform:scale(1.15);opacity:0}}
+.cart-drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(380px,92vw);background:var(--vanilla-2);
+  border-left:3px solid var(--choco);z-index:90;transform:translateX(105%);transition:transform .3s ease;
+  display:flex;flex-direction:column;
+}
+.cart-drawer.open{transform:none}
+.cart-head{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:2px solid rgba(74,44,42,.12)}
+.cart-items{flex:1;overflow:auto;padding:16px 20px;display:flex;flex-direction:column;gap:12px}
+.cart-item{display:flex;gap:12px;align-items:center;background:#fff;border:2px solid var(--choco);border-radius:14px;padding:10px}
+.cart-item img{width:52px;height:52px;border-radius:10px;object-fit:cover;border:2px solid var(--choco)}
+.cart-foot{padding:18px 20px;border-top:2px solid rgba(74,44,42,.12)}
+.scrim{position:fixed;inset:0;background:rgba(74,44,42,.45);z-index:80;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.show{opacity:1;pointer-events:auto}
+.lightbox{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:rgba(43,22,21,.88);padding:20px}
+.lightbox.open{display:grid}
+.lightbox img{max-width:min(900px,94vw);max-height:82vh;border-radius:18px;border:3px solid #fff;object-fit:contain}
+.lightbox button{position:absolute;top:18px;right:18px}
+.toast{
+  position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);
+  background:var(--choco);color:#fff;padding:12px 20px;border-radius:999px;font-size:.9rem;font-weight:500;
+  opacity:0;pointer-events:none;transition:all .3s;z-index:95;max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.qty-btn{width:32px;height:32px;border-radius:9px;border:2px solid var(--choco);background:#fff;font-weight:700}
+</style>
+
+<!-- ================= NAV ================= -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a class="logo" href="#home" aria-label="Scoop and Swirl home">
+      <span class="logo-mark">🍨</span>
+      <span>Scoop &amp; Swirl<small>LAHORE · EST. 2023</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#home">Home</a>
+      <a href="#flavors">Flavors</a>
+      <a href="#about">About</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="btn btn-choco btn-sm nav-order" id="cartOpenBtn" aria-label="Open order">🛒 Order <span class="cart-count" id="cartCount">0</span></button>
+    <button class="burger" id="burgerBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
+  </div>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="Mobile">
+    <a href="#home">Home</a>
+    <a href="#flavors">Flavors</a>
+    <a href="#about">About</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="home" style="padding-top:28px">
+  <div class="wrap hero-grid">
+    <div class="reveal visible">
+      <span class="hero-pill">🍦 Handmade fresh in Lahore · every single day</span>
+      <h1>Life is better<br>with a <span class="swirl">scoop<svg viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true"><path d="M2 10 Q 50 2 100 8 T 198 6" fill="none" stroke="#A8E6CF" stroke-width="6" stroke-linecap="round"/></svg></span></h1>
+      <p class="lead">Small-batch ice cream churned fresh every morning with real fruit, pure milk and zero artificial colours. Premium taste, neighbourhood warmth.</p>
+      <div class="hero-cta">
+        <a class="btn btn-pink" id="heroWaBtn" href="https://wa.me/923001234567?text=Hi%20Scoop%20%26%20Swirl!%20I%27d%20like%20to%20place%20an%20order%20%F0%9F%8D%A6" target="_blank" rel="noopener">💬 Order on WhatsApp</a>
+        <a class="btn btn-white" href="#flavors">See our flavors ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>4.9 ★</strong><span>2,300+ Google reviews</span></div>
+        <div><strong>100%</strong><span>Real fruit · no colours</span></div>
+        <div><strong>45 min</strong><span>Avg. delivery in DHA</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal visible" aria-hidden="false">
+      <div class="hero-blob"></div>
+      <img class="hero-img" src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80" alt="Chocolate cookie sundae glass topped with whipped cream" fetchpriority="high" decoding="async">
+      <div class="float-chip chip-1 float-slow">🍪 Cookies &amp; Cream · Rs 460</div>
+      <div class="float-chip chip-2 float-slower">🛵 Free delivery over Rs 1,500</div>
+      <div class="float-chip chip-3 float-slow">🥭 Mango Kulfi · seasonal!</div>
+      <!-- sprinkles -->
+      <span class="sprinkle float-slow" style="left:8%;bottom:22%;width:26px;height:8px;background:#FF8FAB;transform:rotate(24deg)"></span>
+      <span class="sprinkle float-slower" style="right:10%;top:14%;width:22px;height:8px;background:#A8E6CF;transform:rotate(-18deg)"></span>
+      <span class="sprinkle float-slow" style="right:22%;bottom:6%;width:18px;height:8px;background:#FFE08A;transform:rotate(40deg)"></span>
+      <span class="sprinkle float-slower" style="left:16%;top:12%;width:14px;height:14px;background:#fff;border:2px solid #4A2C2A;border-radius:50%"></span>
+    </div>
+  </div>
+</section>
+
+<div class="marquee" aria-hidden="true"><span class="marquee-track" id="marqueeTrack">🍦 CLASSIC VANILLA &nbsp;·&nbsp; 🍫 BELGIAN CHOCOLATE &nbsp;·&nbsp; 🍓 STRAWBERRY CHEESECAKE &nbsp;·&nbsp; 🥭 MANGO KULFI &nbsp;·&nbsp; 💚 PISTACHIO DREAM &nbsp;·&nbsp; 🍪 COOKIES &amp; CREAM &nbsp;·&nbsp; 🍮 SALTED CARAMEL &nbsp;·&nbsp; 🌹 ROSE FALOODA &nbsp;·&nbsp;&nbsp;</span></div>
+
+<!-- ================= FLAVORS ================= -->
+<section id="flavors">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">🍨 Our menu</span>
+      <h2 class="section-title">Flavors worth melting for</h2>
+      <p class="section-sub">8 house favourites, churned in small batches. Tap “Add to order” and check out in one tap on WhatsApp.</p>
+    </div>
+    <div class="filters reveal" role="tablist" aria-label="Filter flavors">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="fruity">Fruity</button>
+      <button class="filter-btn" data-filter="creamy">Creamy</button>
+      <button class="filter-btn" data-filter="chocolatey">Chocolatey</button>
+    </div>
+    <div class="flavor-grid" id="flavorGrid"><!-- cards injected by JS --></div>
+  </div>
+</section>
+
+<!-- ================= WHY ================= -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;max-width:640px;margin:0 auto 30px">
+      <span class="eyebrow">💛 Why people love us</span>
+      <h2 class="section-title">Simple promises, kept daily</h2>
+      <p class="section-sub" style="margin:0 auto">No shortcuts, no syrups from a bottle. Just honest ice cream made like we’d serve our own family.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal"><div class="why-icon" style="background:var(--mint-soft)">🌅</div><h3>Made fresh daily</h3><p>We churn every morning in small batches and sell out most days. What you taste today was milk yesterday.</p></div>
+      <div class="why-card reveal"><div class="why-icon" style="background:var(--pink-soft)">🍓</div><h3>Real fruit, no artificial colours</h3><p>Real strawberries, Chaunsa mangoes, rose and pistachio. If it’s pink, it’s from fruit — never from a bottle.</p></div>
+      <div class="why-card reveal"><div class="why-icon" style="background:#FFF3C4">🛵</div><h3>Free delivery over Rs 1,500</h3><p>Free scooters across DHA &amp; Gulberg on orders above Rs 1,500. Cold-box packed, melted-or-replaced promise.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="wrap about-grid">
+    <div class="about-photo reveal">
+      <img src="https://images.unsplash.com/photo-1567206563064-6f60f40a2b57?auto=format&fit=crop&w=800&q=80" alt="Fresh gelato flavours in our display counter" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=800&q=80'">
+      <div class="about-badge">est. 2023 · Lahore 💛</div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow">🏠 Our story</span>
+      <h2 class="section-title">Started in a small kitchen, grown with love</h2>
+      <p style="color:var(--choco-soft);margin:12px 0">Scoop &amp; Swirl began in 2023 in a two-room kitchen in DHA Phase 4 — one secondhand churner, Ammi’s kulfi recipe, and a freezer that rattled all night. We shared cups with neighbours, then their cousins, then the whole street.</p>
+      <p style="color:var(--choco-soft)">Three years on, family and friends still taste-test every new flavour. We still churn every morning. The freezer is bigger. The love is the same.</p>
+      <div class="counters">
+        <div class="counter"><strong><span class="count" data-target="5000">0</span>+</strong><span>Happy customers</span></div>
+        <div class="counter"><strong><span class="count" data-target="25">0</span></strong><span>Flavours created</span></div>
+        <div class="counter"><strong><span class="count" data-target="3">0</span></strong><span>Years of sweetness</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery" style="padding-top:20px">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">📸 Gallery</span>
+      <h2 class="section-title">Scoops, sundaes &amp; shakes</h2>
+      <p class="section-sub">Fresh from our counter. Tap any photo to view it bigger.</p>
+    </div>
+    <div class="gallery-cols reveal" id="galleryCols">
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1497034825429-c343d7c6a68f?auto=format&fit=crop&w=700&q=80" alt="Hand holding a strawberry cone" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1577805947697-89e18249d767?auto=format&fit=crop&w=700&q=80" alt="Belgian chocolate shake with whipped cream" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1549395156-e0c1fe6fc7a5?auto=format&fit=crop&w=700&q=80" alt="Melting vanilla waffle cone in hand" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1516559828984-fb3b99548b21?auto=format&fit=crop&w=700&q=80" alt="Rose scoop close-up on a spoon" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=700&q=80" alt="Signature chocolate sundae jars" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+      <div class="g-item"><img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=700&q=80" alt="Signature thick shakes" loading="lazy" decoding="async" onerror="this.onerror=null;this.closest('.g-item').style.display='none'"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REVIEWS ================= -->
+<section class="reviews" id="reviews">
+  <div class="wrap">
+    <div class="reveal" style="text-align:center;margin-bottom:26px">
+      <span class="eyebrow">⭐ Sweet words</span>
+      <h2 class="section-title">Lahore loves us back</h2>
+    </div>
+    <div class="slider reveal" id="slider">
+      <div class="slide active">
+        <div class="stars">★★★★★</div>
+        <p>“Mango Kulfi tastes exactly like my nani’s — creamy, real mango, not too sweet. We drive from Bahria just for this. The kids refuse any other ice cream now.”</p>
+        <div class="who"><span class="avatar">A</span><span><strong>Ayesha Khan</strong><br><small>DHA Phase 5</small></span></div>
+      </div>
+      <div class="slide">
+        <div class="stars">★★★★★</div>
+        <p>“Ordered 2 litres for a dawat — arrived frozen solid in a cold box, on time. Belgian Chocolate finished first. Guests are still talking about it.”</p>
+        <div class="who"><span class="avatar">B</span><span><strong>Bilal Ahmed</strong><br><small>Gulberg Greens</small></span></div>
+      </div>
+      <div class="slide">
+        <div class="stars">★★★★☆</div>
+        <p>“Rose Falooda is something else — light, fragrant, with actual falooda pearls. Café is small but so cute. Go on a weekday evening to skip the rush.”</p>
+        <div class="who"><span class="avatar">M</span><span><strong>Mahnoor Fatima</strong><br><small>Model Town</small></span></div>
+      </div>
+      <div class="slider-nav">
+        <button class="arrow-btn" id="prevBtn" aria-label="Previous review">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="arrow-btn" id="nextBtn" aria-label="Next review">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA ================= -->
+<section class="cta" id="order">
+  <div class="wrap reveal">
+    <h2>Craving something sweet? Order now 🍦</h2>
+    <p>Message us on WhatsApp — we reply in minutes, 12pm to 12am, every day.</p>
+    <a class="btn btn-choco" id="ctaWaBtn" href="https://wa.me/923001234567?text=Hi%20Scoop%20%26%20Swirl!%20I%27d%20like%20to%20place%20an%20order%20%F0%9F%8D%A6" target="_blank" rel="noopener" style="font-size:1.05rem">💬 Order on WhatsApp</a>
+    <p style="margin-top:14px;font-size:.85rem">Free delivery in DHA &amp; Gulberg on orders over Rs 1,500</p>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact">
+  <div class="wrap">
+    <div class="reveal"><span class="eyebrow">📍 Visit us</span>
+      <h2 class="section-title">Come say salaam</h2>
+      <p class="section-sub">Drop by for a tasting, or send us a message and we’ll get back within the hour.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="form-card reveal">
+        <h3 style="margin-bottom:14px">Send us a message</h3>
+        <form id="contactForm" novalidate>
+          <div class="field"><label for="nameInput">Name</label><input id="nameInput" name="name" type="text" placeholder="Your name" autocomplete="name" required></div>
+          <div class="field"><label for="phoneInput">Phone number</label><input id="phoneInput" name="phone" type="tel" placeholder="03xx xxxxxxx" autocomplete="tel" required></div>
+          <div class="field"><label for="msgInput">Message</label><textarea id="msgInput" name="message" rows="4" placeholder="Hi! Do you have pistachio in family pack today?" required></textarea></div>
+          <button class="btn btn-pink" type="submit" style="width:100%">Send via WhatsApp 💬</button>
+          <p id="formNote" style="font-size:.85rem;margin-top:10px;color:var(--choco-soft)"></p>
+        </form>
+      </div>
+      <div class="info-card reveal">
+        <h3 style="margin-bottom:8px">Scoop &amp; Swirl — DHA</h3>
+        <div class="info-line">📍 <span>12-B, Main Boulevard, DHA Phase 4,<br>Lahore, Pakistan</span></div>
+        <div class="info-line">🕛 <span><strong>Open daily:</strong> 12:00 PM – 12:00 AM<br><small>Friday break: 1–2:30 PM</small></span></div>
+        <div class="info-line">📞 <span><a href="tel:+923001234567" style="font-weight:700;text-decoration:underline">0300 123 4567</a> · <a href="mailto:hello@scoopandswirl.pk" style="text-decoration:underline">hello@scoopandswirl.pk</a></span></div>
+        <div class="map-wrap"><iframe title="Scoop and Swirl location map — DHA Lahore" src="https://www.google.com/maps?q=DHA+Phase+4+Lahore+Pakistan&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        <div class="socials">
+          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A2C2A" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="#4A2C2A"/></svg></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="#4A2C2A"><path d="M14 8h3V5h-3c-2.2 0-4 1.8-4 4v2H7v3h3v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1z"/></svg></a>
+          <a href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4A2C2A" stroke-width="2"><path d="M9 8v8a3 3 0 1 0 3 3V4c.5 2.5 2.5 4.5 6 5"/></svg></a>
+          <a href="https://wa.me/923001234567" target="_blank" rel="noopener" aria-label="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="#4A2C2A"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.3.6-.6.8-.4 1.1.7 1.2 1.6 2 2.8 2.6.3.2.5.1.7-.1l.8-.9c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.2 1.4z"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><div class="logo" style="color:#fff;margin-bottom:8px"><span class="logo-mark">🍨</span><span>Scoop &amp; Swirl</span></div><p style="font-size:.9rem;color:#F5D9C8;max-width:320px">Handmade ice cream from Lahore, with love. Fresh daily, real fruit, always.</p></div>
+      <div><h4>Quick links</h4><a href="#home">Home</a><a href="#flavors">Flavors</a><a href="#about">About</a><a href="#gallery">Gallery</a><a href="#contact">Contact</a></div>
+      <div><h4>Visit</h4><a href="#contact">DHA Phase 4, Lahore</a><a href="tel:+923001234567">0300 123 4567</a><a href="mailto:hello@scoopandswirl.pk">hello@scoopandswirl.pk</a><a href="#order">Order on WhatsApp</a></div>
+    </div>
+    <div class="copy">© <span id="yearEl">2026</span> Scoop &amp; Swirl · Made with 💛 in Lahore · Prices in PKR, inclusive of GST</div>
+  </div>
+</footer>
+
+<!-- floating WhatsApp -->
+<a class="wa-float" href="https://wa.me/923001234567?text=Hi%20Scoop%20%26%20Swirl!%20I%27d%20like%20to%20place%20an%20order%20%F0%9F%8D%A6" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.4 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.6-4-4.7-4.2-.1-.2-1.1-1.5-1.1-2.9s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2c.1.1.1.3 0 .5-.3.6-.6.8-.4 1.1.7 1.2 1.6 2 2.8 2.6.3.2.5.1.7-.1l.8-.9c.2-.3.4-.2.7-.1l1.9.9c.3.1.5.2.5.3.1.2.1.6-.2 1.4z"/></svg>
+</a>
+
+<!-- cart drawer -->
+<div class="scrim" id="scrim"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="Your order">
+  <div class="cart-head"><h3>Your order 🛒</h3><button class="qty-btn" id="cartCloseBtn" aria-label="Close order">✕</button></div>
+  <div class="cart-items" id="cartItems"><p style="color:var(--choco-soft);font-size:.92rem">Your tub is empty — add a flavour to get started!</p></div>
+  <div class="cart-foot">
+    <div style="display:flex;justify-content:space-between;font-weight:700;margin-bottom:4px"><span>Total</span><span id="cartTotal">Rs 0</span></div>
+    <p id="deliveryNote" style="font-size:.82rem;color:var(--choco-soft);margin-bottom:12px">Add Rs 1,500 for FREE delivery 🎉</p>
+    <button class="btn btn-pink" id="checkoutBtn" style="width:100%">Checkout via WhatsApp 💬</button>
+  </div>
+</aside>
+
+<!-- lightbox -->
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Photo viewer">
+  <button class="btn btn-white btn-sm" id="lightboxClose">✕ Close</button>
+  <img id="lightboxImg" src="" alt="Gallery photo enlarged">
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================================================================
+   SCOOP & SWIRL — app JS
+   0. data · 1. nav · 2. reveal · 3. flavors+filter+cart · 4. counters
+   5. gallery lightbox · 6. slider · 7. contact form · 8. misc
+================================================================ */
+(function(){
+"use strict";
+var WA_NUMBER = "923001234567";
+var FREE_DELIVERY = 1500;
+
+/* ---------- 0. Flavor data ---------- */
+var FLAVORS = [
+  {name:"Classic Vanilla Bean", desc:"Madagascan vanilla, fresh cream, slow-churned silk.", price:350, cat:"creamy", tag:"Creamy", cls:"", img:"https://images.unsplash.com/photo-1560008581-09826d1de69e?auto=format&fit=crop&w=700&q=80", emoji:"🍦"},
+  {name:"Belgian Chocolate", desc:"70% dark Belgian couverture, extra fudgy swirl.", price:480, cat:"chocolatey", tag:"Chocolatey", cls:"choc", img:"https://images.unsplash.com/photo-1580915411954-282cb1b0d780?auto=format&fit=crop&w=700&q=80", emoji:"🍫"},
+  {name:"Strawberry Cheesecake", desc:"Swat strawberries + baked cheesecake chunks.", price:450, cat:"fruity", tag:"Fruity", cls:"fruit", img:"https://user.uploads.dev/file/51112645f67295cfe82a54bc846c8ba9.jpg", emoji:"🍓"},
+  {name:"Mango Kulfi", desc:"Chaunsa mangoes, condensed milk, desi-style dense.", price:420, cat:"fruity", tag:"Fruity · seasonal", cls:"fruit", img:"https://user.uploads.dev/file/5c88f64b182d202a89e96dce50ade581.jpg", emoji:"🥭"},
+  {name:"Pistachio Dream", desc:"Roasted Iranian pista, hint of kewra, low sugar.", price:550, cat:"creamy", tag:"Creamy", cls:"", img:"https://user.uploads.dev/file/5e6e16884cc9dc98ee1a6dbdd623bffd.jpg", emoji:"💚"},
+  {name:"Cookies and Cream", desc:"Crushed choco cookies folded through vanilla.", price:460, cat:"chocolatey", tag:"Chocolatey", cls:"choc", img:"https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=700&q=80", emoji:"🍪"},
+  {name:"Salted Caramel", desc:"Burnt-sugar caramel, sea salt, butter finish.", price:490, cat:"creamy", tag:"Creamy", cls:"", img:"https://user.uploads.dev/file/7b5c06e1eb690590bf1552a75e03755d.jpg", emoji:"🍮"},
+  {name:"Rose Falooda", desc:"Rose sharbat, vermicelli pearls, basil seeds.", price:440, cat:"fruity", tag:"Fruity", cls:"fruit", img:"https://user.uploads.dev/file/9dcbd6a1e238eaefd434eb48ec394c18.jpg", emoji:"🌹"}
+];
+var FALLBACK_IMG = "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=700&q=80";
+
+/* ---------- helpers ---------- */
+function $(s,c){return (c||document).querySelector(s)}
+function $all(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))}
+function toast(msg){var t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(function(){t.classList.remove("show")},2600)}
+function money(n){return "Rs "+n.toLocaleString("en-PK")}
+
+/* ---------- 1. Nav ---------- */
+var navbar=$("#navbar"), burger=$("#burgerBtn"), mobileMenu=$("#mobileMenu");
+window.addEventListener("scroll",function(){navbar.classList.toggle("scrolled",window.scrollY>10)},{passive:true});
+burger.addEventListener("click",function(){
+  var open=mobileMenu.classList.toggle("open");
+  burger.setAttribute("aria-expanded",open?"true":"false");
+});
+$all("#mobileMenu a").forEach(function(a){a.addEventListener("click",function(){mobileMenu.classList.remove("open")})});
+// smooth scroll with sticky offset
+$all('a[href^="#"]').forEach(function(a){
+  a.addEventListener("click",function(e){
+    var id=a.getAttribute("href");
+    if(id.length<2)return;
+    var el=$(id);if(!el)return;
+    e.preventDefault();
+    var y=el.getBoundingClientRect().top+window.scrollY-70;
+    window.scrollTo({top:y,behavior:"smooth"});
+  });
+});
+// marquee duplicate for seamless loop
+var mt=$("#marqueeTrack");mt.textContent=mt.textContent+mt.textContent;
+
+/* ---------- 2. Reveal on scroll ---------- */
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){if(en.isIntersecting){en.target.classList.add("visible");io.unobserve(en.target)}});
+},{threshold:.12});
+$all(".reveal").forEach(function(el){io.observe(el)});
+
+/* ---------- 3. Flavors + filter + cart ---------- */
+var grid=$("#flavorGrid");
+function cardHTML(f,i){
+  return '<article class="flavor-card reveal visible" data-cat="'+f.cat+'">'+
+    '<div class="flavor-img-wrap"><img src="'+f.img+'" alt="'+f.name+'" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\''+FALLBACK_IMG+'\'">'+
+    '<span class="flavor-tag '+f.cls+'">'+f.tag+'</span></div>'+
+    '<div class="flavor-body"><h3>'+f.emoji+' '+f.name+'</h3><p>'+f.desc+'</p>'+
+    '<div class="flavor-row"><span class="price">'+money(f.price)+' <small>/ scoop</small></span>'+
+    '<button class="add-btn" data-add="'+i+'">Add to order +</button></div></div></article>';
+}
+grid.innerHTML=FLAVORS.map(cardHTML).join("");
+
+$all(".filter-btn").forEach(function(btn){
+  btn.addEventListener("click",function(){
+    $all(".filter-btn").forEach(function(b){b.classList.remove("active")});
+    btn.classList.add("active");
+    var f=btn.getAttribute("data-filter");
+    $all(".flavor-card",grid).forEach(function(card){
+      var show=(f==="all"||card.getAttribute("data-cat")===f);
+      card.classList.toggle("hidden-card",!show);
+    });
+  });
+});
+
+var cart={}; // index -> qty
+var cartCount=$("#cartCount"), cartItems=$("#cartItems"), cartTotal=$("#cartTotal"), deliveryNote=$("#deliveryNote");
+function cartQty(){return Object.keys(cart).reduce(function(s,k){return s+cart[k]},0)}
+function cartSum(){return Object.keys(cart).reduce(function(s,k){return s+cart[k]*FLAVORS[k].price},0)}
+function renderCart(){
+  cartCount.textContent=cartQty();
+  var keys=Object.keys(cart);
+  if(!keys.length){cartItems.innerHTML='<p style="color:var(--choco-soft);font-size:.92rem">Your tub is empty — add a flavour to get started!</p>'}
+  else{
+    cartItems.innerHTML=keys.map(function(k){
+      var f=FLAVORS[k],q=cart[k];
+      return '<div class="cart-item"><img src="'+f.img+'" alt="" onerror="this.onerror=null;this.src=\''+FALLBACK_IMG+'\'">'+
+      '<div style="flex:1"><strong style="font-size:.9rem">'+f.name+'</strong><br><small>'+money(f.price)+' each</small></div>'+
+      '<button class="qty-btn" data-dec="'+k+'">−</button><strong>'+q+'</strong><button class="qty-btn" data-inc="'+k+'">+</button></div>';
+    }).join("");
+  }
+  var sum=cartSum();
+  cartTotal.textContent=money(sum);
+  deliveryNote.textContent=sum>=FREE_DELIVERY?"🎉 You unlocked FREE delivery!":("Add "+money(FREE_DELIVERY-sum)+" for FREE delivery 🎉");
+  // keep CTA/checkout links in sync with cart
+  var msg=buildOrderMsg();
+  $("#ctaWaBtn").href="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg);
+  $("#heroWaBtn").href="https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg);
+}
+function buildOrderMsg(){
+  var keys=Object.keys(cart);
+  if(!keys.length)return "Hi Scoop & Swirl! I'd like to place an order 🍦";
+  var lines=keys.map(function(k){return "• "+FLAVORS[k].name+" x"+cart[k]+" — "+money(FLAVORS[k].price*cart[k])});
+  return "Hi Scoop & Swirl! I'd like to order:\n"+lines.join("\n")+"\nTotal: "+money(cartSum())+" 🍦";
+}
+grid.addEventListener("click",function(e){
+  var b=e.target.closest("[data-add]");if(!b)return;
+  var i=b.getAttribute("data-add");
+  cart[i]=(cart[i]||0)+1;renderCart();
+  toast(FLAVORS[i].name+" added to your order 🍨");
+});
+cartItems.addEventListener("click",function(e){
+  var inc=e.target.closest("[data-inc]"),dec=e.target.closest("[data-dec]");
+  if(inc){cart[inc.getAttribute("data-inc")]++}
+  if(dec){var k=dec.getAttribute("data-dec");cart[k]--;if(cart[k]<=0)delete cart[k]}
+  if(inc||dec)renderCart();
+});
+var drawer=$("#cartDrawer"),scrim=$("#scrim");
+function openCart(){drawer.classList.add("open");scrim.classList.add("show")}
+function closeCart(){drawer.classList.remove("open");scrim.classList.remove("show")}
+$("#cartOpenBtn").addEventListener("click",openCart);
+$("#cartCloseBtn").addEventListener("click",closeCart);
+scrim.addEventListener("click",closeCart);
+$("#checkoutBtn").addEventListener("click",function(){
+  if(!cartQty()){toast("Add a flavour first 🙂");return}
+  window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(buildOrderMsg()),"_blank");
+});
+renderCart();
+
+/* ---------- 4. Animated counters ---------- */
+var counted=false;
+var cio=new IntersectionObserver(function(entries){
+  entries.forEach(function(en){
+    if(en.isIntersecting&&!counted){
+      counted=true;
+      $all(".count").forEach(function(el){
+        var target=parseInt(el.getAttribute("data-target"),10),t0=null;
+        function step(t){if(!t0)t0=t;var p=Math.min((t-t0)/1600,1);
+          el.textContent=Math.floor(target*(1-Math.pow(1-p,3))).toLocaleString("en-PK");
+          if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString("en-PK");}
+        requestAnimationFrame(step);
+      });
+      cio.disconnect();
+    }
+  });
+},{threshold:.4});
+cio.observe($(".counters"));
+
+/* ---------- 5. Gallery lightbox ---------- */
+var lightbox=$("#lightbox"),lightboxImg=$("#lightboxImg");
+$("#galleryCols").addEventListener("click",function(e){
+  var img=e.target.closest(".g-item img");if(!img)return;
+  lightboxImg.src=img.src.replace("w=700","w=1200");lightboxImg.alt=img.alt;
+  lightbox.classList.add("open");document.body.style.overflow="hidden";
+});
+function closeLB(){lightbox.classList.remove("open");document.body.style.overflow=""}
+$("#lightboxClose").addEventListener("click",closeLB);
+lightbox.addEventListener("click",function(e){if(e.target===lightbox)closeLB()});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){closeLB();closeCart()}});
+
+/* ---------- 6. Testimonial slider ---------- */
+var slides=$all(".slide"),dotsWrap=$("#dots"),cur=0,timer=null;
+slides.forEach(function(_,i){
+  var d=document.createElement("button");d.className="dot"+(i===0?" active":"");d.setAttribute("aria-label","Go to review "+(i+1));
+  d.addEventListener("click",function(){go(i);restart()});dotsWrap.appendChild(d);
+});
+var dots=$all(".dot",dotsWrap);
+function go(i){cur=(i+slides.length)%slides.length;
+  slides.forEach(function(s,k){s.classList.toggle("active",k===cur)});
+  dots.forEach(function(d,k){d.classList.toggle("active",k===cur)});
+}
+function restart(){clearInterval(timer);timer=setInterval(function(){go(cur+1)},6000)}
+$("#prevBtn").addEventListener("click",function(){go(cur-1);restart()});
+$("#nextBtn").addEventListener("click",function(){go(cur+1);restart()});
+// swipe
+var sx=null;
+$("#slider").addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});
+$("#slider").addEventListener("touchend",function(e){
+  if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;
+  if(Math.abs(dx)>40)go(cur+(dx<0?1:-1));sx=null;restart();
+},{passive:true});
+restart();
+
+/* ---------- 7. Contact form -> WhatsApp ---------- */
+$("#contactForm").addEventListener("submit",function(e){
+  e.preventDefault();
+  var n=$("#nameInput").value.trim(),p=$("#phoneInput").value.trim(),m=$("#msgInput").value.trim();
+  var note=$("#formNote");
+  if(!n||!p||!m){note.textContent="Please fill name, phone and message 🙂";return}
+  if(!/^[0-9+\-\s]{7,15}$/.test(p)){note.textContent="That phone number looks off — please check it.";return}
+  note.textContent="Opening WhatsApp…";
+  var text="Hi Scoop & Swirl! I'm "+n+" ("+p+"). "+m;
+  window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(text),"_blank");
+  toast("Opening WhatsApp — see you there! 💬");
+});
+
+/* ---------- 8. Misc ---------- */
+$("#yearEl").textContent=new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
